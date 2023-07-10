@@ -14,6 +14,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold();
+    return Scaffold(
+        body: Container(
+      width: _deviceWidth,
+      height: _deviceHeight,
+      color: Colors.black,
+    ));
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +17,170 @@ class _HomePageState extends State<HomePage> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold();
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          toolbarHeight: 0,
+        ),
+        body: Container(
+          width: _deviceWidth,
+          height: _deviceHeight,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 60),
+                child: _pageHeadWidget(),
+              ),
+              _todoWidget('Shopping in the Lidl',
+                  'Potegowska 23 Street, Gdansk ', false)
+            ],
+          ),
+        ));
+  }
+
+  Widget _pageHeadWidget() {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: _deviceWidth,
+          height: _deviceHeight! * 0.40,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(60),
+              bottomRight: Radius.circular(60),
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 50, 0, 0),
+                      child: Text(
+                        'Daily \nTasks ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                      child: _taskCountWidget(),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: -40,
+          child: Center(child: _addTaskWidget()),
+        ),
+      ],
+    );
+  }
+
+  Widget _addTaskWidget() {
+    return MaterialButton(
+      onPressed: () {},
+      child: Container(
+        height: _deviceHeight! * 0.1,
+        width: _deviceHeight! * 0.1,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(100)),
+          color: Colors.grey[200],
+        ),
+        child: Center(
+            child: Icon(
+          Icons.add,
+          size: 35,
+        )),
+      ),
+    );
+  }
+
+  Widget _taskCountWidget() {
+    return Column(
+      children: [
+        Text(
+          '2 / 4',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 40,
+          ),
+        ),
+        Text(
+          'tasks',
+          style: TextStyle(
+              color: Colors.white, fontSize: 30, fontWeight: FontWeight.w200),
+        )
+      ],
+    );
+  }
+
+  Widget _todoWidget(String title, String? description, bool status) {
+    return Container(
+      height: 70,
+      width: _deviceWidth! * 0.9,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.all(
+          Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Transform.scale(
+              scale: 1.9,
+              child: Checkbox(
+                shape: CircleBorder(),
+                hoverColor: Colors.white,
+                activeColor: Colors.white,
+                focusColor: Colors.white,
+                fillColor: MaterialStateProperty.all(Colors.white),
+                value: false,
+                onChanged: (bool? value) {},
+                checkColor: Colors.white,
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              RichText(
+                maxLines: 4,
+                text: TextSpan(
+                  text: description!,
+                ),
+                // Text(description!,
+                // style:
+                //     TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
