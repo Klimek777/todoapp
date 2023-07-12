@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoapp/datalocal/localdb.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,26 +13,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double? _deviceHeight, _deviceWidth;
+//open box
 
-  List toDoList = [
-    ['Lidl Shopping', 'Potegowska 23 Street, Gdansk', false],
-    ['Lidl Shopping', 'Potegowska 23 Street, Gdansk', false],
-    ['Lidl Shopping', '', false],
-    ['Lidl Shopping', 'Potegowska 23 Street, Gdansk', false],
-    ['Lidl Shopping', 'Potegowska 23 Street, Gdansk', false],
-  ];
+  final _box = Hive.box('todo');
+  ToDoDB db = new ToDoDB();
+
+  double? _deviceHeight, _deviceWidth;
 
   void checkCheckbox(bool? value, int index) {
     setState(() {
-      toDoList[index][2] = !toDoList[index][2];
+      db.toDoList[index][2] = !db.toDoList[index][2];
     });
+    db.updateList();
+  }
+
+  void deleteItem(int index) {
+    setState(() {
+      db.toDoList.removeAt(index);
+    });
+    db.updateList();
+  }
+
+  @override
+  void initState() {
+    db.loadList();
+    print(db.toDoList);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
+
+    int totalTasks = db.getTotalTasks();
+    int completedTasks = db.getCompletedTasks();
 
     return Scaffold(
         appBar: AppBar(
@@ -45,18 +62,18 @@ class _HomePageState extends State<HomePage> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 60),
-                child: _pageHeadWidget(),
+                child: _pageHeadWidget(totalTasks, completedTasks),
               ),
               Container(
                   width: _deviceWidth! * 0.9,
                   height: _deviceHeight! * 0.4718,
-                  child: _toDoListTile())
+                  child: totalTasks == 0 ? _emptyListTile() : _toDoListTile())
             ],
           ),
         ));
   }
 
-  Widget _pageHeadWidget() {
+  Widget _pageHeadWidget(int totalTasks, int completedTasks) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -92,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
-                      child: _taskCountWidget(),
+                      child: _taskCountWidget(totalTasks, completedTasks),
                     ),
                   ],
                 )
@@ -112,7 +129,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _addTaskWidget() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, 'create').then((_) => setState(() {}));
+      },
       child: Container(
         height: _deviceHeight! * 0.1,
         width: _deviceHeight! * 0.1,
@@ -129,11 +148,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _taskCountWidget() {
+  Widget _taskCountWidget(int totalTasks, int completedTasks) {
     return Column(
       children: [
         Text(
-          '2 / 4',
+          '$completedTasks / $totalTasks',
           style: TextStyle(
             color: Colors.white,
             fontSize: 40,
@@ -160,12 +179,11 @@ class _HomePageState extends State<HomePage> {
               width: 10,
             ),
             SlidableAction(
-              icon: Icons.delete,
-              label: 'delete',
-              backgroundColor: status ? Colors.grey[400]! : Colors.black,
-              borderRadius: BorderRadius.circular(30),
-              onPressed: (context) {},
-            ),
+                icon: Icons.delete,
+                label: 'delete',
+                backgroundColor: status ? Colors.grey[400]! : Colors.black,
+                borderRadius: BorderRadius.circular(30),
+                onPressed: (context) => deleteItem(index)),
           ],
         ),
         child: Container(
@@ -224,11 +242,26 @@ class _HomePageState extends State<HomePage> {
 
   Widget _toDoListTile() {
     return ListView.builder(
-      itemCount: toDoList.length,
+      itemCount: db.toDoList.length,
       itemBuilder: (context, index) {
-        return _todoWidget(
-            toDoList[index][0], toDoList[index][1], toDoList[index][2], index);
+        return _todoWidget(db.toDoList[index][0], db.toDoList[index][1],
+            db.toDoList[index][2], index);
       },
+    );
+  }
+
+  Widget _emptyListTile() {
+    return Column(
+      children: [
+        Text(
+          "All DONE!",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+        Text(
+          'Add some new tasks',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        )
+      ],
     );
   }
 }
