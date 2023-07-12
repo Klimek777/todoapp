@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../datalocal/localdb.dart';
@@ -79,10 +80,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           ),
           Row(
             children: [
-              Text(
-                'New Task',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-              ),
+              Text('New Task',
+                  style: GoogleFonts.kanit(
+                      fontSize: 40, fontWeight: FontWeight.bold)),
             ],
           )
         ],
@@ -92,9 +92,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   Widget _titleTextField() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: TextFormField(
-        decoration: const InputDecoration(
+        maxLength: 25,
+        cursorColor: Colors.grey,
+        decoration: InputDecoration(
+          hintStyle: GoogleFonts.kanit(),
+          counterText: "",
           hintText: "Title...",
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1, color: Colors.grey),
@@ -124,10 +128,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   Widget _descriptionTextField() {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+      padding: EdgeInsets.only(top: 10.0, bottom: 10),
       child: TextFormField(
-        decoration: const InputDecoration(
-          hintText: "Description (optional)...",
+        maxLength: 30,
+        cursorColor: Colors.grey,
+        decoration: InputDecoration(
+          hintStyle: GoogleFonts.kanit(),
+          hintText: "Short description (optional)...",
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.all(
@@ -177,10 +184,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         minWidth: _deviceWidth! * 0.70,
         height: _deviceHeight! * 0.06,
         color: Colors.black,
-        child: const Text(
+        child: Text(
           'Create Task',
-          style: TextStyle(
+          style: GoogleFonts.kanit(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+          // style: TextStyle(
+          //     color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -196,8 +205,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       db.updateList();
 
       Navigator.pop(context);
-
-      print(db.toDoList);
     }
   }
 }

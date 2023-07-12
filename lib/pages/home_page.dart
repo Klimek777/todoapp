@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoapp/datalocal/localdb.dart';
 
@@ -37,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     db.loadList();
-    print(db.toDoList);
     super.initState();
   }
 
@@ -96,10 +96,10 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.fromLTRB(30, 50, 0, 0),
                       child: Text(
                         'Daily \nTasks ',
-                        style: TextStyle(
+                        style: GoogleFonts.kanit(
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontSize: 45,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 45),
                       ),
                     ),
                   ],
@@ -151,16 +151,11 @@ class _HomePageState extends State<HomePage> {
   Widget _taskCountWidget(int totalTasks, int completedTasks) {
     return Column(
       children: [
-        Text(
-          '$completedTasks / $totalTasks',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 40,
-          ),
-        ),
+        Text('$completedTasks / $totalTasks',
+            style: GoogleFonts.kanit(color: Colors.white, fontSize: 40)),
         Text(
           'tasks',
-          style: TextStyle(
+          style: GoogleFonts.kanit(
               color: Colors.white, fontSize: 30, fontWeight: FontWeight.w200),
         )
       ],
@@ -180,7 +175,6 @@ class _HomePageState extends State<HomePage> {
             ),
             SlidableAction(
                 icon: Icons.delete,
-                label: 'delete',
                 backgroundColor: status ? Colors.grey[400]! : Colors.black,
                 borderRadius: BorderRadius.circular(30),
                 onPressed: (context) => deleteItem(index)),
@@ -217,20 +211,15 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  RichText(
-                    maxLines: 4,
-                    text: TextSpan(
-                      text: description!,
-                    ),
-                    // Text(description!,
-                    // style:
-                    //     TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
-                  ),
+                  Text(title,
+                      style: GoogleFonts.kanit(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17)),
+                  if (description != null && description.isNotEmpty)
+                    Text(description,
+                        style: GoogleFonts.kanit(
+                            color: Colors.white, fontWeight: FontWeight.w400))
                 ],
               )
             ],
@@ -253,14 +242,12 @@ class _HomePageState extends State<HomePage> {
   Widget _emptyListTile() {
     return Column(
       children: [
-        Text(
-          "All DONE!",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-        ),
-        Text(
-          'Add some new tasks',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-        )
+        Text("All DONE!",
+            style:
+                GoogleFonts.kanit(fontSize: 35, fontWeight: FontWeight.bold)),
+        Text('Add some new tasks',
+            style:
+                GoogleFonts.kanit(fontSize: 25, fontWeight: FontWeight.w300)),
       ],
     );
   }
