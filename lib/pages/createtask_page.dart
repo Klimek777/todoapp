@@ -64,10 +64,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // Text(
-              //   'Add Customer',
-              //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              // ),
               IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -86,6 +82,22 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget _newtaskForm() {
+    return SizedBox(
+      width: _deviceWidth! * 0.8,
+      child: Form(
+        key: _newtaskFormKey,
+        child: Column(
+          children: [
+            _titleTextField(),
+            _descriptionTextField(),
+            _createButton(),
+          ],
+        ),
       ),
     );
   }
@@ -157,22 +169,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 
-  Widget _newtaskForm() {
-    return SizedBox(
-      width: _deviceWidth! * 0.8,
-      child: Form(
-        key: _newtaskFormKey,
-        child: Column(
-          children: [
-            _titleTextField(),
-            _descriptionTextField(),
-            _createButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _createButton() {
     return Padding(
       padding: EdgeInsets.only(top: 20.0),
@@ -188,14 +184,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           'Create Task',
           style: GoogleFonts.kanit(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
-          // style: TextStyle(
-          //     color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
 
-  void _createTask() async {
+  void _createTask() {
     if (_newtaskFormKey.currentState!.validate()) {
       _newtaskFormKey.currentState!.save();
 
