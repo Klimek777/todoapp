@@ -8,8 +8,8 @@ void main() async {
   await Hive.initFlutter();
 
   //create hive box
-
   var box = await Hive.openBox('todo');
+
   runApp(const MyApp());
 }
 
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: 'home',
       routes: {
-        'home': (context) => HomePage(),
-        'create': (context) => CreateTaskPage()
+        'home': (context) => const HomePage(),
+        'create': (context) => const CreateTaskPage()
       },
     );
   }
