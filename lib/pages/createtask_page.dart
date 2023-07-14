@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +20,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   final GlobalKey<FormState> _newtaskFormKey = GlobalKey<FormState>();
   final _box = Hive.box('todo');
 
-  ToDoDB db = new ToDoDB();
+  ToDoDB db = ToDoDB();
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               children: [
                 _headWidget(),
                 SizedBox(
-                  height: _deviceHeight! * 0.1,
+                  height: _deviceHeight! * 0.08,
                 ),
                 _newtaskForm(),
               ],
@@ -58,7 +58,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   Widget _headWidget() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0),
       child: Column(
         children: [
           Row(
@@ -158,7 +158,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   }
 
   Widget _newtaskForm() {
-    return Container(
+    return SizedBox(
       width: _deviceWidth! * 0.8,
       child: Form(
         key: _newtaskFormKey,
@@ -175,7 +175,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   Widget _createButton() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(top: 20.0),
       child: MaterialButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

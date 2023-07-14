@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoapp/datalocal/localdb.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,8 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 //open box
 
-  final _box = Hive.box('todo');
-  ToDoDB db = new ToDoDB();
+  ToDoDB db = ToDoDB();
 
   double? _deviceHeight, _deviceWidth;
 
@@ -62,12 +60,16 @@ class _HomePageState extends State<HomePage> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 60),
-                child: _pageHeadWidget(totalTasks, completedTasks),
+                child: _pageHeadWidget(
+                  totalTasks,
+                  completedTasks,
+                ),
               ),
-              Container(
-                  width: _deviceWidth! * 0.9,
-                  height: _deviceHeight! * 0.4718,
-                  child: totalTasks == 0 ? _emptyListTile() : _toDoListTile())
+              SizedBox(
+                width: _deviceWidth! * 0.9,
+                height: _deviceHeight! * 0.4718,
+                child: totalTasks == 0 ? _emptyListTile() : _toDoListTile(),
+              ),
             ],
           ),
         ));
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage> {
           width: _deviceWidth,
           height: _deviceHeight! * 0.40,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Color.fromARGB(255, 0, 0, 0),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(60),
               bottomRight: Radius.circular(60),
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 50, 0, 0),
+                      padding: EdgeInsets.fromLTRB(30, 50, 0, 0),
                       child: Text(
                         'Daily \nTasks ',
                         style: GoogleFonts.kanit(
@@ -108,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
                       child: _taskCountWidget(totalTasks, completedTasks),
                     ),
                   ],
@@ -165,7 +167,7 @@ class _HomePageState extends State<HomePage> {
   Widget _todoWidget(
       String title, String? description, bool status, int index) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
       child: Slidable(
         endActionPane: ActionPane(
           motion: ScrollMotion(),
@@ -192,7 +194,7 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 10),
                 child: Transform.scale(
                   scale: 1.9,
                   child: Checkbox(
